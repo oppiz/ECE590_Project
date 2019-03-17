@@ -18,5 +18,9 @@ Order and get Raspberry sense hat working (Completed, with example code)
 Write code to control sense hat (Working sense hat code Project/LEDDisplay.cc)
 
 Write code to improve elma scheduler (Added multithreading to elma)
+* https://github.com/oppiz/ECE590_Project/blob/master/include/process.h
+* https://github.com/oppiz/ECE590_Project/blob/master/src/process.cc
+* https://github.com/oppiz/ECE590_Project/blob/master/test/multithread.cc
 
-Get sense hat working in/with elma scheduler
+Get sense hat working in/with elma scheduler (Sense has working in elma with multithreading 
+* https://github.com/oppiz/ECE590_Project/blob/master/examples/LEDDisplay.cc

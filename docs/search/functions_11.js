@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['watch',['watch',['../classelma_1_1Manager.html#acb3c31759ad46b171a406447ff1be640',1,'elma::Manager']]]
+  ['value',['value',['../classelma_1_1Event.html#a845bd41e0a9498ed731e194549f2f658',1,'elma::Event']]]
 ];

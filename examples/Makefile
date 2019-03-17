@@ -18,7 +18,7 @@ endif
 
 #Flags, Libraries and Includes
 CFLAGS      := -fsanitize=address -ggdb
-LIB         := -lgtest -lpthread $(ASAN) -lelma -lssl -lcrypto
+LIB         := -lgtest -lpthread $(ASAN) -lelma -lssl -lcrypto -lRTIMULib
 INCLUDE		:= -I../include
 LIBDIR		:= -L../lib
 ELMALIB		:= ../lib/libelma.a

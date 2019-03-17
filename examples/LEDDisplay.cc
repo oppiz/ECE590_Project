@@ -52,6 +52,7 @@ namespace {
     int lastDigit(int n) { return (n % 10); } 
 
     void LEDDisplay(int n, int x, uint16_t *p){
+        std::cout << "in LED Display n= " << n << " x= " << x << "\n";
         int offset = 0;
         if (x != 0){
             offset = 4;
@@ -115,7 +116,7 @@ namespace {
     class  LEDScreen: public elma::Process {
 
      public: 
-        LEDScreen(string name) : Process(name, 1, SINGLE) {}
+        LEDScreen(string name) : Process(name, 1, MULTI) {}
         void init() { 
 
             fbfd = open(FILEPATH, O_RDWR);
@@ -156,10 +157,20 @@ namespace {
         }
         void start() {}
         void update() {
-            memset(map, 0, FILESIZE);
-            LEDDisplay(TempNumber, 0, p);
-            LEDDisplay(TempNumber, 1, p);
-            TempNumber++;
+            
+            std::cout << "Made it to Display Update\n";
+            if ( channel("Temperature").nonempty() ) {
+                memset(map, 0, FILESIZE);
+                std::cout << "Made it to Display Update Channel Loop\n";
+                int TempNumber = channel("Temperature").latest();
+                std::cout << "Temp channel is giving me: " << TempNumber << "\n";
+                LEDDisplay(firstDigit(TempNumber), 0, p);
+                LEDDisplay(lastDigit(TempNumber), 1, p);
+            }
+            //LEDDisplay(5, 0, p);
+            //LEDDisplay(2, 1, p);
+            
+            
         }
         void stop() {
             memset(map, 0, FILESIZE);
@@ -180,31 +191,66 @@ namespace {
 
     };    
 
-  /*  class  Fast: public elma::Process {
+    class  Temp: public elma::Process {
 
     public: 
-        Fast(string name) : Process(name) {}
-        void init() {}
+        Temp(string name) : Process(name) {}
+        void init() {
+            settings = new RTIMUSettings("RTIMULib");
+            imu = RTIMU::createIMU(settings);
+            humidity = RTHumidity::createHumidity(settings);
+
+            if ((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL)) {
+                printf("No IMU found\n");
+                exit(1);
+            }
+
+            imu->IMUInit();
+
+            if (humidity != NULL)
+                humidity->humidityInit();
+
+        }
         void start() {}
         void update() {
-            Fast_ADDIT++;
+
+            usleep(imu->IMUGetPollInterval() * 1000);
+
+            while (imu->IMURead()) {
+                RTIMU_DATA imuData = imu->getIMUData();
+
+                if (humidity != NULL)
+                    humidity->humidityRead(imuData);
+    
+                printf("temperature: %4.1f \n", imuData.temperature *(9/5)+32);
+                int Ttemp = (int) (imuData.temperature*(9/5)+32);
+                channel("Temperature").send(Ttemp);
+            }
+ 
         }
         void stop() {}
+        private:
 
-    };    */
+        RTIMUSettings *settings; 
+        RTIMU *imu;
+        RTHumidity *humidity; 
 
-    TEST(Singlethread, basic) {              
-    
-        elma::Manager m;
-        LEDScreen display("display");
-       
-        m.schedule(display, 3000_ms)
-         .init()
-         .run(60000_ms);
-        
-        
-        
-    }
+    };    
 
 
 }
+
+    int main(void){              
+    
+        elma::Manager m;
+        LEDScreen display("display");
+        Temp ReadTemp("ReadTemp");
+        Channel Temperature("Temperature");
+
+        m.schedule(display, 3000_ms)
+         .schedule(ReadTemp, 3000_ms)
+         .add_channel(Temperature)
+         .init()
+         .run(60000_ms); 
+        
+    }

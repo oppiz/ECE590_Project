@@ -10,6 +10,11 @@ This will be tested by porting elma to the Raspberry Pi and using the sense hat 
 ## Resources
 This project will require Elma, Raspberry Pi sense hat library, Raspberry Pi and other Linux libraries
 
+To Install needed library RTIMULib
+```
+sudo apt-get update
+sudo apt-get install sense-hat
+```
 ## Milestones
 Port Elma to the Raspberry Pi. (Completed, "ASAN linking error on Pi" issue submitted and resolved on elma git hub)
 

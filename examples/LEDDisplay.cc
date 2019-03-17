@@ -15,6 +15,8 @@
 #include <linux/fb.h>
 #include <sys/ioctl.h>
 
+#include <thread>
+
 #include <bits/stdc++.h> 
 
 #include "RTIMULib.h"
@@ -153,19 +155,22 @@ namespace {
             //p = map;
             map = static_cast<uint16_t*>(fbp);
             p = map;
-            TempNumber = 0;
+            
         }
         void start() {}
         void update() {
             
             std::cout << "Made it to Display Update\n";
+            
             if ( channel("Temperature").nonempty() ) {
                 memset(map, 0, FILESIZE);
                 std::cout << "Made it to Display Update Channel Loop\n";
                 int TempNumber = channel("Temperature").latest();
+                
                 std::cout << "Temp channel is giving me: " << TempNumber << "\n";
                 LEDDisplay(firstDigit(TempNumber), 0, p);
                 LEDDisplay(lastDigit(TempNumber), 1, p);
+
             }
             //LEDDisplay(5, 0, p);
             //LEDDisplay(2, 1, p);
@@ -187,7 +192,7 @@ namespace {
             uint16_t *map;
             uint16_t *p;
             struct fb_fix_screeninfo fix_info;
-            int TempNumber;
+            std::mutex _mtx;
 
     };    
 

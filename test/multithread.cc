@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <thread>
 #include "gtest/gtest.h"
 #include "elma.h"
 
@@ -22,10 +23,15 @@ namespace {
         void start() {}
         void update() {
             usleep(30000);
+            _mtx.lock();
             Slow_ADDIT++;
+            _mtx.unlock();
+            
         }
         void stop() {}
         private:
+        std::mutex _mtx;
+
     };    
 
     class  SlowSingle: public elma::Process {
@@ -65,8 +71,7 @@ namespace {
          .schedule(count, 3_ms)
          .init()
          .run(91_ms);
-        std::cout << "SINGLE Fast_ADDIT: " << Fast_ADDIT << " Slow_ADDIT : " << Slow_ADDIT << "\n";
-        
+        //std::cout << "SINGLE Fast_ADDIT: " << Fast_ADDIT << " Slow_ADDIT : " << Slow_ADDIT << "\n";
         
     }
 
@@ -85,7 +90,7 @@ namespace {
 
         //Give time for everything to finish             
         sleep (1);
-        std::cout << "MULTI Fast_ADDIT: " << Fast_ADDIT << " Slow_ADDIT : " << Slow_ADDIT << "\n";
+        //std::cout << "MULTI Fast_ADDIT: " << Fast_ADDIT << " Slow_ADDIT : " << Slow_ADDIT << "\n";
         EXPECT_EQ(Fast_ADDIT, 30);
         EXPECT_EQ(Slow_ADDIT, 4);
         
@@ -95,3 +100,4 @@ namespace {
 
 
 }
+

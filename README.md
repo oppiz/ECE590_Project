@@ -1,119 +1,22 @@
-Elma
-===
+Cloned from https://github.com/klavinslab/elma info http://klavinslab.org/elma/
 
-Elma is an event loop and process manager for embedded and reactive systems. Elma is structured as a C++ library of classes on top of which you build your own C++ project. It keeps track of processes, finite state machines, events, and communication channels, executing them at specified frequencies. Elma was developed as part of the University of Washington's [ECE P 520 course](https://github.com/klavins/ECEP520) on advanced embedded systems programming. More information on how Elma was designed can be found in the links below:
-- [Event loop management](https://github.com/klavins/ECEP520/tree/master/week_6)
-- [Events and finite state machines](https://github.com/klavins/ECEP520/tree/master/week_7)
-- [HTTP in event loops](https://github.com/klavins/ECEP520/blob/master/week_8)
+# ECE590_Project
+## Project Goals
 
-Installation
-===
+The goals of this project are to port elma onto the Raspberry Pi and add priority and or multithreading functionality to elma.
 
-The source code for Elma [is on Github](https://github.com/klavinslab/elma).
+This will be tested by porting elma to the Raspberry Pi and using the sense hat to create a visual display that requires quick and uninterrupted scheduler.
 
-From Dockerhub
----
+## Resources
+This project will require Elma, Raspberry Pi sense hat library, Raspberry Pi and other Linux libraries
 
-To get started, you will need a C++ build environment. We have provided one with the Docker container `elma`, which you can use as follows:
+## Milestones
+Port Elma to the Raspberry Pi. (Completed, "ASAN linking error on Pi" issue submitted and resolved on elma git hub)
 
-    git clone https://github.com/klavinslab/elma.git
-    cd elma
-    docker run -v $PWD:/source -it klavins/elma:latest bash
-    make
-    examples/bin/basic
+Order and get Raspberry sense hat working (Completed, with example code)
 
-From the Dockerfile
----
+Write code to control sense hat (Working sense hat code Project/LEDDisplay.cc)
 
-You can also build the docker environment, described in env/Dockerfile, yourself, with the following commands:
+Write code to improve elma scheduler (Added multithreading to elma)
 
-    git clone https://github.com/klavinslab/elma.git
-    cd elma
-    docker build -t myelma .
-    docker run -v $PWD:/source -it myelma bash
-    make
-    examples/bin/basic
-
-Manual Installation
----
-
-To install Elma without using Docker, you will need to install the following tools:
-- [gcc](https://gcc.gnu.org/) 4.9 or an equivalent C/C++ compiler that supports at least C++14
-- Make (if you want to use the makefile. Alternatively, you can use some other build manager)
-- [Doxygen](http://www.doxygen.nl/)
-- [Google Test](https://github.com/google/googletest)
-- Neils Lohmann's JSON library: https://github.com/nlohmann/json
-- [My fork](https://github.com/klavins/cpp-httplib.git) of [yhirose](https://github.com/yhirose)'s HTTP library
-
-Installation on Unix systems (e.g. Raspbian)
----
-
-First install required packages available through apt-get
-
-    sudo apt-get update
-    sudo apt-get install -y cmake
-    sudo apt-get install -y cppcheck
-    sudo apt-get install -y graphviz
-    sudo apt-get install -y doxygen
-    sudo apt-get install -y cmake
-    sudo apt-get install -y libssl-dev
-
-Next, install Google Test
-
-    cd /usr/src
-    sudo git clone https://github.com/google/googletest.git
-    cd googletest
-    sudo mkdir install
-    cd install
-    sudo cmake ../
-    sudo make
-    sudo make install
-
-Next, install the json library
-
-    sudo mkdir /usr/local/include/json
-    cd /usr/local/include/json
-    sudo curl -O -J -L https://github.com/nlohmann/json/releases/download/v3.5.0/json.hpp
-    sudo mv json.hpp json.h
-
-Next, install httplib
-
-    cd /tmp
-    git clone https://github.com/klavins/cpp-httplib.git
-    sudo mkdir /usr/local/include/httplib
-    sudo mv /tmp/cpp-httplib/httplib.h /usr/local/include/httplib
-
-Now you should be ready to install elma:
-
-    cd ~
-    mkdir Code
-    cd Code
-    git clone https://github.com/klavinslab/elma.git
-    cd elma
-    make
-
-Note that the Makefile should detect if you are on a pi by using the command
-
-    uname -m
-
-which on a pi 3 model B+ returns 'armv71'. If your pi is different, you might need to change the ifeq statments in `test/Makefile` and `examples/Makefile`.
-
-If you would like to treat elma as a library, so you can link in other code, you should link to the relevant files in to the unversal system resources (usr) as follows:
-```bash
-ln -s include /usr/local/include/elma
-ln -s lib/libelma.a /usr/local/lib/libelma.a
-```
-Then you can do 
-```c++
-#include "elma/elma.h"
-```
-in your code and use the `-lelma` flag while linking. See the [example elma project](https://github.com/klavinslab/elma_project) for an example.
-
-Usage
-===
-See the examples in the `examples` directory for how to build new event loops with Elma.
-
-License
-===
-
-This software is open source and uses the MIT license. Details can be found [here](https://github.com/klavinslab/elma).
+Get sense hat working in/with elma scheduler

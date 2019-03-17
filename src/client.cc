@@ -31,8 +31,9 @@ namespace elma {
     }
 
     Client& Client::get(std::string url, std::function<void(json&)> handler) {
-        std::thread t(&Client::_get_thread,this,url,handler);
-        t.detach(); // detaching means we don't have to join later
+        //std::thread t(&Client::_get_thread,this,url,handler);
+        //t.detach(); // detaching means we don't have to join later
+        _get_thread(url,handler);
     }
 
     Client& Client::process_responses() {

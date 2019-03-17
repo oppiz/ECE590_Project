@@ -43,7 +43,7 @@ namespace {
 
     class GetTester : public Process {
         public:
-        GetTester() : Process("Get Tester") {}
+        GetTester() : Process("Get Tester", 1, MULTI) {}
         void init() {}
         void start() {
             got_response = false;

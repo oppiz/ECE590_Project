@@ -30,15 +30,22 @@ namespace elma {
         //! Status of the process, as managed by a Manager. Get the
         //! status using the status() getter.
         typedef enum { UNINITIALIZED, STOPPED, RUNNING } status_type;
+        typedef enum { SINGLE, MULTI } thread_type;
 
         //! Default constructor. Names process "no name"
-        Process(int n = 0) : _name("unnamed process"), _status(UNINITIALIZED), _manager_ptr(NULL), _priority(n) {}
+        /*!
+          \param n Thread priority
+          \param thread_type SINGLE or MULTI thread process
+        */
+        Process(int n = 0, thread_type thread = SINGLE) : _name("unnamed process"), _status(UNINITIALIZED), _manager_ptr(NULL), _priority(n), _thread(thread) {}
 
         //! Constructor that takes a name for the process
         /*!
           \param name The name of the process
+          \param n Thread priority
+          \param thread_type SINGLE or MULTI thread process
         */
-        Process(std::string name, int n = 0) : _name(name), _status(UNINITIALIZED), _manager_ptr(NULL), _priority(n) {}
+        Process(std::string name, int n = 0, thread_type thread = SINGLE) : _name(name), _status(UNINITIALIZED), _manager_ptr(NULL), _priority(n), _thread(thread) {}
         virtual ~Process() = default;
 
         // Interface for derived classes
@@ -120,6 +127,7 @@ namespace elma {
         // Instance variables
         string _name;
         status_type _status;
+        thread_type _thread; 
         high_resolution_clock::duration _period,          // request time between updates
                                         _previous_update, // duration from start to update before last
                                         _last_update;     // duration from start to last update

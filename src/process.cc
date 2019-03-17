@@ -74,7 +74,13 @@ namespace elma {
     void Process::_update(high_resolution_clock::duration elapsed) {
         _previous_update = _last_update;
         _last_update = elapsed;
-        update();
+        
+        if (_thread == SINGLE){
+            update();
+        }else if (_thread == MULTI){
+            std::thread t(&Process::update, this);
+            t.detach();
+        }       
         _num_updates++;
     }
 

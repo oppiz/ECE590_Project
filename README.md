@@ -7,6 +7,8 @@ The goals of this project are to port elma onto the Raspberry Pi and add multith
 
 This will be tested by porting elma to the Raspberry Pi and using the sense hat to create a visual display that requires quick and uninterrupted scheduler.
 
+![alt text](https://github.com/oppiz/ECE590_Project/blob/master/PiSensehat%20Example.jpg?raw=true)
+
 ## Resources
 This project will require Elma, Raspberry Pi sense hat library, Raspberry Pi and other Linux libraries
 

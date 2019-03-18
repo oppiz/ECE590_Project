@@ -61,6 +61,10 @@ namespace {
 
     };    
 
+    //This allows testing of single thread performance. Below was testing on my systems. 
+    //SINGLE Fast_ADDIT: 8 Slow_ADDIT : 3
+    //MULTI Fast_ADDIT: 30 Slow_ADDIT : 4
+
     TEST(Singlethread, basic) {              
     
         elma::Manager m;
@@ -88,7 +92,7 @@ namespace {
          .init()
          .run(91_ms);
 
-        //Give time for everything to finish             
+        //Give time for everything time to finish             
         sleep (1);
         //std::cout << "MULTI Fast_ADDIT: " << Fast_ADDIT << " Slow_ADDIT : " << Slow_ADDIT << "\n";
         EXPECT_EQ(Fast_ADDIT, 30);

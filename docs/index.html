@@ -66,27 +66,36 @@ $(function() {
 <div class="textblock"><p>Cloned from <a href="https://github.com/klavinslab/elma">https://github.com/klavinslab/elma</a> info <a href="http://klavinslab.org/elma/">http://klavinslab.org/elma/</a></p>
 <h1>ECE590_Project</h1>
 <h2>Project Goals</h2>
-<p>The goals of this project are to port elma onto the Raspberry Pi and add priority and or multithreading functionality to elma.</p>
+<p>The goals of this project are to port elma onto the Raspberry Pi and add multithreading functionality to elma.</p>
 <p>This will be tested by porting elma to the Raspberry Pi and using the sense hat to create a visual display that requires quick and uninterrupted scheduler.</p>
 <h2>Resources</h2>
 <p>This project will require Elma, Raspberry Pi sense hat library, Raspberry Pi and other Linux libraries</p>
-<h2>Milestones</h2>
+<p>To Install needed Raspberry Pi sense hat library RTIMULib </p><div class="fragment"><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install sense-hat</div></div><!-- fragment --> <h2>Milestones</h2>
 <p>Port Elma to the Raspberry Pi. (Completed, "ASAN linking error on Pi" issue submitted and resolved on elma git hub)</p>
 <p>Order and get Raspberry sense hat working (Completed, with example code)</p>
 <p>Write code to control sense hat (Working sense hat code Project/LEDDisplay.cc)</p>
-<p>Write code to improve elma scheduler (Added multithreading to elma)</p><ul>
+<p>Write code to improve elma scheduler (Added multithreading to elma, modifies <a class="el" href="client_8cc_source.html">client.cc</a> to use new multithread)</p>
+<ul>
 <li><a href="https://github.com/oppiz/ECE590_Project/blob/master/include/process.h">https://github.com/oppiz/ECE590_Project/blob/master/include/process.h</a></li>
 <li><a href="https://github.com/oppiz/ECE590_Project/blob/master/src/process.cc">https://github.com/oppiz/ECE590_Project/blob/master/src/process.cc</a></li>
 <li><a href="https://github.com/oppiz/ECE590_Project/blob/master/test/multithread.cc">https://github.com/oppiz/ECE590_Project/blob/master/test/multithread.cc</a></li>
+<li><a href="https://github.com/oppiz/ECE590_Project/blob/master/src/client.cc">https://github.com/oppiz/ECE590_Project/blob/master/src/client.cc</a></li>
 </ul>
 <p>Get sense hat working in/with elma scheduler (Sense has working in elma with multithreading</p><ul>
-<li><a href="https://github.com/oppiz/ECE590_Project/blob/master/examples/LEDDisplay.cc">https://github.com/oppiz/ECE590_Project/blob/master/examples/LEDDisplay.cc</a> </li>
+<li><a href="https://github.com/oppiz/ECE590_Project/blob/master/examples/LEDDisplay.cc">https://github.com/oppiz/ECE590_Project/blob/master/examples/LEDDisplay.cc</a></li>
+</ul>
+<h2>Performance</h2>
+<p>Performance can be tested/measured with ./test/bin/multithread</p>
+<div class="fragment"><div class="line">//Process decloration</div><div class="line">SlowSingle(string name) : Process(name, 1, SINGLE) {}</div><div class="line">SlowSingle(string name) : Process(name, 1, MULTI) {}</div><div class="line"></div><div class="line">    //Sleep sleeps a large amount of time</div><div class="line">    void update() {</div><div class="line">        usleep(30000);</div><div class="line">        Slow_ADDIT++;</div><div class="line">    }</div><div class="line"></div><div class="line">    //populate schedualer</div><div class="line">    m.schedule(SLEEP, 20_ms)</div><div class="line">    .schedule(count, 3_ms)</div><div class="line">    .init()</div><div class="line">    .run(91_ms);</div><div class="line"></div><div class="line">    //results</div><div class="line">    SINGLE Fast_ADDIT: 8 Slow_ADDIT : 3</div><div class="line">    MULTI Fast_ADDIT: 30 Slow_ADDIT : 4</div></div><!-- fragment --><p>The test file shows single threading is subject to delays under long or slow updates. Multi threading works as expected allowing for full amount of updates in the given runtime.</p>
+<h3>Notes</h3>
+<ul>
+<li>Because the process are ditached timing becomes odd, a sleep command in the test file was needed to ensure all update process finished before the main program exited. </li>
 </ul>
 </div></div><!-- contents -->
 <!-- start footer part -->
   <hr class="footer"/><address class="footer"><small>
   Developed by <a href="http://klavinslab.org">Eric Klavins</a> for UW ECE P 520<br>
-  Generated on Sun Mar 17 2019 01:57:27 for Elma by &#160;<a href="http://www.doxygen.org/index.html">
+  Generated on Sun Mar 17 2019 23:13:31 for Elma by &#160;<a href="http://www.doxygen.org/index.html">
   Doxygen
   </a> 1.8.13
   </small></address>

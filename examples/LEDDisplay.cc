@@ -21,11 +21,13 @@
 
 #include "RTIMULib.h"
 
+//Below values are described in the above Raspberry Pi documentation
 #define FILEPATH "/dev/fb1"
 #define RGB565_RED 0x7E0
 #define NUM_WORDS 64
 #define FILESIZE (NUM_WORDS * sizeof(uint16_t))
 
+//define all numbers with placement on LED screen
 static vector<int> zero{0, 1, 2, 8, 10, 16, 18, 24, 26, 32, 33, 34};
 static vector<int> one{1, 9, 17, 25, 33};
 static vector<int> two{0, 1, 2, 10, 16, 17, 18, 24, 32, 33, 34};
@@ -43,18 +45,26 @@ namespace {
     using namespace elma;
     using std::vector; 
 
+    //! Return the first digist on an Int
+    //! \param n int to have first digit determined  
+    //! \return first digit of the given int
     int firstDigit(int n) { 
-
-    while (n >= 10)  
-        n /= 10; 
-      
-    return n; 
+        while (n >= 10)  
+            n /= 10; 
+        return n; 
     } 
-
+    
+    //! Return the last digist on an Int
+    //! \param n int to have last digit determined  
+    //! \return Last digit of the given int
     int lastDigit(int n) { return (n % 10); } 
 
+    //! Display the given number on the Sense hat LED panel
+    //! \param n int digit to have displayed on the LED desplay
+    //! \param x Int 0 or 1 first or second digit of the number sets the screen offset
+    //! \param p pointer to the Framebuffer memory area
     void LEDDisplay(int n, int x, uint16_t *p){
-        std::cout << "in LED Display n= " << n << " x= " << x << "\n";
+        //std::cout << "in LED Display n= " << n << " x= " << x << "\n";
         int offset = 0;
         if (x != 0){
             offset = 4;
@@ -114,11 +124,14 @@ namespace {
                 break;   
         } 
     } 
-
+    
+    //! A class the displays two digit ints from channel Temperature on SENSE hat LED display 
     class  LEDScreen: public elma::Process {
-
      public: 
+        //! Create a LED screen component
         LEDScreen(string name) : Process(name, 1, MULTI) {}
+
+        //Setup the lED screen as described at https://www.raspberrypi.org/documentation/hardware/sense-hat/ 
         void init() { 
 
             fbfd = open(FILEPATH, O_RDWR);
@@ -157,26 +170,28 @@ namespace {
             p = map;
             
         }
+        //! Nothing to do to start
         void start() {}
+
+        //! Read channel lastest value and display it.
         void update() {
             
-            std::cout << "Made it to Display Update\n";
+            //std::cout << "Made it to Display Update\n";
             
             if ( channel("Temperature").nonempty() ) {
                 memset(map, 0, FILESIZE);
-                std::cout << "Made it to Display Update Channel Loop\n";
+                //std::cout << "Made it to Display Update Channel Loop\n";
                 int TempNumber = channel("Temperature").latest();
                 
-                std::cout << "Temp channel is giving me: " << TempNumber << "\n";
+                //std::cout << "Temp channel is giving me: " << TempNumber << "\n";
                 LEDDisplay(firstDigit(TempNumber), 0, p);
                 LEDDisplay(lastDigit(TempNumber), 1, p);
 
-            }
-            //LEDDisplay(5, 0, p);
-            //LEDDisplay(2, 1, p);
-            
+            }           
             
         }
+
+        //! Set LEDS's off/unmap and close framebuffer
         void stop() {
             memset(map, 0, FILESIZE);
     
@@ -185,21 +200,24 @@ namespace {
             }
             close(fbfd); 
         }
-        private:
 
-            int i;
+    private:
+            //Below values are described in the above Raspberry Pi documentation
             int fbfd;
             uint16_t *map;
             uint16_t *p;
             struct fb_fix_screeninfo fix_info;
             std::mutex _mtx;
-
     };    
-
+    
+    //! A class that reads values from hardware and stores them in the Temperature channel
     class  Temp: public elma::Process {
-
     public: 
+        
+        //! Create a hardware Temperature read component
         Temp(string name) : Process(name) {}
+
+        //Setup the LED screen as described at https://www.raspberrypi.org/documentation/hardware/sense-hat/ 
         void init() {
             settings = new RTIMUSettings("RTIMULib");
             imu = RTIMU::createIMU(settings);
@@ -216,7 +234,11 @@ namespace {
                 humidity->humidityInit();
 
         }
+
+        //! Nothing to do to start
         void start() {}
+
+        //Read the current value and, convert to fahrenheit and push to channel Temperature
         void update() {
 
             usleep(imu->IMUGetPollInterval() * 1000);
@@ -233,15 +255,17 @@ namespace {
             }
  
         }
-        void stop() {}
-        private:
 
+        //! Nothing to do to start
+        void stop() {}
+
+    private:
+        //Below values are described in the above Raspberry Pi documentation
         RTIMUSettings *settings; 
         RTIMU *imu;
         RTHumidity *humidity; 
 
     };    
-
 
 }
 

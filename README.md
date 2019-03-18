@@ -43,10 +43,15 @@ Performance can be tested/measured with ./test/bin/multithread
 SlowSingle(string name) : Process(name, 1, SINGLE) {}
 SlowSingle(string name) : Process(name, 1, MULTI) {}
 
-    //Sleep sleeps a large amount of time
+    //Slow sleeps a large amount of time
     void update() {
         usleep(30000);
         Slow_ADDIT++;
+    }
+    
+    //Fast simply adds 1 and returns
+    void update() {
+        Fast_ADDIT++;
     }
 
     //populate schedualer

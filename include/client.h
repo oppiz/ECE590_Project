@@ -16,7 +16,7 @@ namespace elma {
     //! @code
     //! class GetTester : public Process {
     //!     public:
-    //!     GetTester() : Process("Get Tester") {}
+    //!     GetTester() : Process("Get Tester", 0 , MULTI) {}
     //!     void init() {}
     //!     void start() {
     //!         got_response = false;

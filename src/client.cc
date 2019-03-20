@@ -33,39 +33,8 @@ namespace elma {
     Client& Client::get(std::string url, std::function<void(json&)> handler) {
         //std::thread t(&Client::_get_thread,this,url,handler);
         //t.detach(); // detaching means we don't have to join later
-        _get_thread(url,handler);
-    }
-
-    Client& Client::process_responses() {
-
-        _mtx.lock();
-
-        for(auto response : _responses ) {
-            std::get<1>(response)(std::get<0>(response));
-        }
-
-        _responses.clear();
-
-        _mtx.unlock();
-
-        return *this;
-
-    }
-
-    const std::shared_ptr<httplib::Response> Client::_get_aux(std::string url) {
-        auto parts = url_parts(url);
-        if ( _use_ssl ) {
-            httplib::SSLClient cli(parts.first.c_str(), 443);
-            return cli.Get(parts.second.c_str());              
-        } else {
-            httplib::Client cli(parts.first.c_str(), 80);
-            return cli.Get(parts.second.c_str());              
-        }        
-    }
-
-    void Client::_get_thread(std::string url, std::function<void(json&)> handler) {
-
-        json json_response;
+        //_get_thread(url,handler);
+                json json_response;
 
         try {
 
@@ -97,7 +66,35 @@ namespace elma {
         _mtx.lock();
         _responses.push_back(std::make_tuple(json_response, handler));
         _mtx.unlock();
+    }
 
-    }    
+    Client& Client::process_responses() {
+
+        _mtx.lock();
+
+        for(auto response : _responses ) {
+            std::get<1>(response)(std::get<0>(response));
+        }
+
+        _responses.clear();
+
+        _mtx.unlock();
+
+        return *this;
+
+    }
+
+    const std::shared_ptr<httplib::Response> Client::_get_aux(std::string url) {
+        auto parts = url_parts(url);
+        if ( _use_ssl ) {
+            httplib::SSLClient cli(parts.first.c_str(), 443);
+            return cli.Get(parts.second.c_str());              
+        } else {
+            httplib::Client cli(parts.first.c_str(), 80);
+            return cli.Get(parts.second.c_str());              
+        }        
+    }
+
+   
 
 };

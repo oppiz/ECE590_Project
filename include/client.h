@@ -61,7 +61,7 @@ namespace elma {
 
         private:
 
-        void _get_thread(std::string url, std::function<void(json&)> handler);
+        //void _get_thread(std::string url, std::function<void(json&)> handler);
         const std::shared_ptr<httplib::Response> _get_aux(std::string url);
         std::vector<std::tuple<json, std::function<void(json&)>>> _responses;
         bool _use_ssl;

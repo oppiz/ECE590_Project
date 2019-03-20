@@ -7,6 +7,8 @@ The goals of this project are to port elma onto the Raspberry Pi and add multith
 
 This will be tested by porting elma to the Raspberry Pi and using the sense hat to create a visual display that requires quick and uninterrupted scheduler.
 
+![alt text](https://github.com/oppiz/ECE590_Project/blob/master/PiSensehat%20Example.jpg?raw=true)
+
 ## Resources
 This project will require Elma, Raspberry Pi sense hat library, Raspberry Pi and other Linux libraries
 
@@ -22,7 +24,7 @@ Order and get Raspberry sense hat working (Completed, with example code)
 
 Write code to control sense hat (Working sense hat code Project/LEDDisplay.cc)
 
-Write code to improve elma scheduler (Added multithreading to elma, modifies client.cc to use new multithread)
+Write code to improve elma scheduler (Added multithreading to elma) *modified client.cc to use new multithread more cleanup on client.cc possible
 
 * https://github.com/oppiz/ECE590_Project/blob/master/include/process.h
 * https://github.com/oppiz/ECE590_Project/blob/master/src/process.cc
@@ -41,10 +43,15 @@ Performance can be tested/measured with ./test/bin/multithread
 SlowSingle(string name) : Process(name, 1, SINGLE) {}
 SlowSingle(string name) : Process(name, 1, MULTI) {}
 
-    //Sleep sleeps a large amount of time
+    //Slow sleeps a large amount of time
     void update() {
         usleep(30000);
         Slow_ADDIT++;
+    }
+    
+    //Fast simply adds 1 and returns
+    void update() {
+        Fast_ADDIT++;
     }
 
     //populate schedualer

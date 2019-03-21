@@ -73,7 +73,7 @@ Overall the results are very positive. The multithreading seems to work well wit
 
 * Because the process are ditached timing becomes odd, a sleep command in the test file was needed to ensure all update process finished before the main program exited.
 
-* Originally, I attemped to add the multithreading to the manager directly, but after many challanges, found it easier to place it in the process itself. Severa different wrappers and reference libraries were used with no success. 
+* Originally, I attemped to add the multithreading in to the manager directly, but after many challanges, found it easier to place it in the process itself. Several different wrappers and reference libraries were used with no success. One advantage of placing mulithreading in the process directly is it allowed easier variable control and interaction with the manager.
 
 ### References
 

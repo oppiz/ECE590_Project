@@ -46,6 +46,14 @@ namespace elma {
         //! \param handler The handler, whose argument will be the json received from the request
         //! \return A reference to the client, for chaining
         Client& get(std::string url, std::function<void(json&)> handler);
+        
+        //! Send an HTTP PUSH request to a specific URL and register a handler 
+        //! to deal with the response. This method assumes the server will respond
+        //! with a JSON string. This method is asynchronous and returns immediately.
+        //! \param url The url, preceded by http:// or https://
+        //! \param data The data, is the json arguemnt to be pushed
+        //! \param handler The handler, whose argument will be the json received from the request
+        //! \return A reference to the client, for chaining
         Client& post(std::string url, json data, std::function<void(json&)> handler);
 
         //! Process all responses received so far

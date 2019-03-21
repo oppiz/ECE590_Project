@@ -29,6 +29,7 @@ Write code to improve elma scheduler (Added multithreading to elma) *modified cl
 * https://github.com/oppiz/ECE590_Project/blob/master/include/process.h
 * https://github.com/oppiz/ECE590_Project/blob/master/src/process.cc
 * https://github.com/oppiz/ECE590_Project/blob/master/test/multithread.cc
+* https://github.com/oppiz/ECE590_Project/blob/master/include/client.h 
 * https://github.com/oppiz/ECE590_Project/blob/master/src/client.cc 
 
 Get sense hat working in/with elma scheduler (Sense has working in elma with multithreading 

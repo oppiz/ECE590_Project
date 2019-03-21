@@ -34,7 +34,7 @@ Write code to improve elma scheduler (Added multithreading to elma) *modified cl
 Get sense hat working in/with elma scheduler (Sense has working in elma with multithreading 
 * https://github.com/oppiz/ECE590_Project/blob/master/examples/LEDDisplay.cc
 
-## Performance
+## Results
 
 Performance can be tested/measured with ./test/bin/multithread
 
@@ -67,7 +67,16 @@ SlowSingle(string name) : Process(name, 1, MULTI) {}
 
 The test file shows single threading is subject to delays under long or slow updates. Multi threading works as expected allowing for full amount of updates in the given runtime. 
 
+Overall the results are very positive. The multithreading seems to work well with elma and has several valid use cases including client.h/client.cc. The Pi working example also works well, and uses multithreading (by choice not by necessity) 
+
 ### Notes 
 
 * Because the process are ditached timing becomes odd, a sleep command in the test file was needed to ensure all update process finished before the main program exited.
 
+* Originally, I attemped to add the multithreading to the manager directly, but after many challanges, found it easier to place it in the process itself. Severa different wrappers and reference libraries were used with no success. 
+
+### References
+
+* Examples/information included in the RTIMULib package were used extensively to create the working modle. https://github.com/RPi-Distro/RTIMULib
+
+* Documentation for multi threads on non-static member functions was used https://thispointer.com/c11-start-thread-by-member-function-with-arguments/

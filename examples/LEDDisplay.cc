@@ -39,6 +39,8 @@ static vector<int> seven{0, 1, 2, 10, 18, 26, 34};
 static vector<int> eight{0, 1, 2, 8, 10, 16, 17, 18, 24, 26, 32, 33, 34};
 static vector<int> nine{0, 1, 2, 8, 10, 16, 17, 18, 26, 34};
 
+static std::mutex _mtx;
+
 
 namespace {
 
@@ -181,7 +183,10 @@ namespace {
             if ( channel("Temperature").nonempty() ) {
                 memset(map, 0, FILESIZE);
                 //std::cout << "Made it to Display Update Channel Loop\n";
+                _mtx.lock();
                 int TempNumber = channel("Temperature").latest();
+                _mtx.unlock();
+                
                 
                 //std::cout << "Temp channel is giving me: " << TempNumber << "\n";
                 LEDDisplay(firstDigit(TempNumber), 0, p);
@@ -251,7 +256,9 @@ namespace {
     
                 printf("temperature: %4.1f \n", imuData.temperature *(9/5)+32);
                 int Ttemp = (int) (imuData.temperature*(9/5)+32);
+                _mtx.lock();
                 channel("Temperature").send(Ttemp);
+                _mtx.unlock();
             }
  
         }
@@ -283,3 +290,5 @@ namespace {
          .run(60000_ms); 
         
     }
+    
+      

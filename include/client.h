@@ -46,6 +46,7 @@ namespace elma {
         //! \param handler The handler, whose argument will be the json received from the request
         //! \return A reference to the client, for chaining
         Client& get(std::string url, std::function<void(json&)> handler);
+        Client& post(std::string url, json data, std::function<void(json&)> handler);
 
         //! Process all responses received so far
         //! \return A reference to the client, for chaining        
@@ -63,6 +64,7 @@ namespace elma {
 
         //void _get_thread(std::string url, std::function<void(json&)> handler);
         const std::shared_ptr<httplib::Response> _get_aux(std::string url);
+        const std::shared_ptr<httplib::Response> _post_aux(std::string url, json data);
         std::vector<std::tuple<json, std::function<void(json&)>>> _responses;
         bool _use_ssl;
         std::mutex _mtx;

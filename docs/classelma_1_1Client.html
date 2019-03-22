@@ -82,6 +82,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9a62fb198837fa69913a9fccb276cffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ff6393c0340293b95deb3e467e13d88"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classelma_1_1Client.html">Client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classelma_1_1Client.html#a6ff6393c0340293b95deb3e467e13d88">get</a> (std::string url, std::function&lt; void(json &amp;)&gt; handler)</td></tr>
 <tr class="separator:a6ff6393c0340293b95deb3e467e13d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28a4dbb7fea27efa6c2bbc1f47d4dfe1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classelma_1_1Client.html">Client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classelma_1_1Client.html#a28a4dbb7fea27efa6c2bbc1f47d4dfe1">post</a> (std::string url, json data, std::function&lt; void(json &amp;)&gt; handler)</td></tr>
+<tr class="separator:a28a4dbb7fea27efa6c2bbc1f47d4dfe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79f9ebc000886db882fc1735747527de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classelma_1_1Client.html">Client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classelma_1_1Client.html#a79f9ebc000886db882fc1735747527de">process_responses</a> ()</td></tr>
 <tr class="separator:a79f9ebc000886db882fc1735747527de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac741ec4c67b09e4baf379c3074c16a4"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classelma_1_1Client.html#aac741ec4c67b09e4baf379c3074c16a4">url_parts</a> (std::string url)</td></tr>
@@ -91,7 +93,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An HTTP client for connecting to json services. </p>
-<p>An example usage in a process </p><div class="fragment"><div class="line"><span class="keyword">class </span>GetTester : <span class="keyword">public</span> Process {</div><div class="line">    <span class="keyword">public</span>:</div><div class="line">    GetTester() : Process(<span class="stringliteral">&quot;Get Tester&quot;</span>) {}</div><div class="line">    <span class="keywordtype">void</span> init() {}</div><div class="line">    <span class="keywordtype">void</span> start() {</div><div class="line">        got_response = <span class="keyword">false</span>;</div><div class="line">        http_get(<span class="stringliteral">&quot;https://api.github.com/repos/klavins/ecep520&quot;</span>, [<span class="keyword">this</span>](json&amp; response) {</div><div class="line">            got_response = <span class="keyword">true</span>;</div><div class="line">        });</div><div class="line">    }</div><div class="line">    <span class="keywordtype">void</span> update() {}</div><div class="line">    <span class="keywordtype">void</span> stop() {</div><div class="line">        ASSERT_EQ(<span class="keyword">true</span>,got_response);</div><div class="line">    }</div><div class="line">    <span class="keywordtype">bool</span> got_response;</div><div class="line">};</div></div><!-- fragment --> 
+<p>An example usage in a process </p><div class="fragment"><div class="line"><span class="keyword">class </span>GetTester : <span class="keyword">public</span> Process {</div><div class="line">    <span class="keyword">public</span>:</div><div class="line">    GetTester() : Process(<span class="stringliteral">&quot;Get Tester&quot;</span>, 0 , MULTI) {}</div><div class="line">    <span class="keywordtype">void</span> init() {}</div><div class="line">    <span class="keywordtype">void</span> start() {</div><div class="line">        got_response = <span class="keyword">false</span>;</div><div class="line">        http_get(<span class="stringliteral">&quot;https://api.github.com/repos/klavins/ecep520&quot;</span>, [<span class="keyword">this</span>](json&amp; response) {</div><div class="line">            got_response = <span class="keyword">true</span>;</div><div class="line">        });</div><div class="line">    }</div><div class="line">    <span class="keywordtype">void</span> update() {}</div><div class="line">    <span class="keywordtype">void</span> stop() {</div><div class="line">        ASSERT_EQ(<span class="keyword">true</span>,got_response);</div><div class="line">    }</div><div class="line">    <span class="keywordtype">bool</span> got_response;</div><div class="line">};</div></div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00034">34</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9a62fb198837fa69913a9fccb276cffe"></a>
@@ -185,7 +187,52 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The number of unprocessed responses </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00060">60</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8h_source.html#l00069">69</a> of file <a class="el" href="client_8h_source.html">client.h</a>.</p>
+
+</div>
+</div>
+<a id="a28a4dbb7fea27efa6c2bbc1f47d4dfe1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28a4dbb7fea27efa6c2bbc1f47d4dfe1">&#9670;&nbsp;</a></span>post()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classelma_1_1Client.html">Client</a> &amp; elma::Client::post </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>url</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">json&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(json &amp;)&gt;&#160;</td>
+          <td class="paramname"><em>handler</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Send an HTTP PUSH request to a specific URL and register a handler to deal with the response. This method assumes the server will respond with a JSON string. This method is asynchronous and returns immediately. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">url</td><td>The url, preceded by <a href="http://">http://</a> or <a href="https://">https://</a> </td></tr>
+    <tr><td class="paramname">data</td><td>The data, is the json arguemnt to be pushed </td></tr>
+    <tr><td class="paramname">handler</td><td>The handler, whose argument will be the json received from the request </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A reference to the client, for chaining </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00071">71</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -205,7 +252,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p><a class="el" href="classelma_1_1Process.html" title="An abstract base class for processes. ">Process</a> all responses received so far </p><dl class="section return"><dt>Returns</dt><dd>A reference to the client, for chaining </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00039">39</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="client_8cc_source.html#l00107">107</a> of file <a class="el" href="client_8cc_source.html">client.cc</a>.</p>
 
 </div>
 </div>
@@ -244,7 +291,7 @@ Public Member Functions</h2></td></tr>
 <!-- start footer part -->
   <hr class="footer"/><address class="footer"><small>
   Developed by <a href="http://klavinslab.org">Eric Klavins</a> for UW ECE P 520<br>
-  Generated on Sun Mar 17 2019 23:13:31 for Elma by &#160;<a href="http://www.doxygen.org/index.html">
+  Generated on Thu Mar 21 2019 22:14:29 for Elma by &#160;<a href="http://www.doxygen.org/index.html">
   Doxygen
   </a> 1.8.13
   </small></address>

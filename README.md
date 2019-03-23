@@ -35,6 +35,8 @@ Write code to improve elma scheduler (Added multithreading to elma) *modified cl
 Get sense hat working in/with elma scheduler (Sense has working in elma with multithreading 
 * https://github.com/oppiz/ECE590_Project/blob/master/examples/LEDDisplay.cc
 
+All ELMA documentation was updated to reflect added functionality. 
+
 ## Results
 
 Performance can be tested/measured with ./test/bin/multithread
